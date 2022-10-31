@@ -1,48 +1,48 @@
 [submodule "cdap"]
 	path = cdap
-	url = ../cdap.git
-	branch = develop
+	url = https://github.com/xaana/fabriq
+	branch = develop-fabriq
 [submodule "app-artifacts/hydrator-plugins"]
 	path = app-artifacts/hydrator-plugins
-	url = ../hydrator-plugins.git
+	url = https://github.com/cdapio/hydrator-plugins
 	branch = develop
 [submodule "security-extensions/cdap-security-extn"]
 	path = security-extensions/cdap-security-extn
-	url = ../cdap-security-extn.git
+	url = https://github.com/cdapio/cdap-security-extn
 	branch = develop
 [submodule "app-artifacts/mmds"]
 	path = app-artifacts/mmds
-	url = ../../cdap-solutions/mmds.git
+	url = https://github.com/cdap-solutions/mmds
 	branch = develop
 [submodule "app-artifacts/delta"]
 	path = app-artifacts/delta
-	url = ../../data-integrations/delta.git
+	url = https://github.com/data-integrations/delta
 	branch = develop
 [submodule "app-artifacts/bigquery-delta-plugins"]
 	path = app-artifacts/bigquery-delta-plugins
-	url = ../../data-integrations/bigquery-delta-plugins.git
+	url = https://github.com/data-integrations/bigquery-delta-plugins
 	branch = develop
 [submodule "app-artifacts/database-delta-plugins"]
 	path = app-artifacts/database-delta-plugins
-	url = ../../data-integrations/database-delta-plugins.git
+	url = https://github.com/data-integrations/database-delta-plugins
 	branch = develop
 [submodule "app-artifacts/datastream-delta-plugins"]
 	path = app-artifacts/datastream-delta-plugins
-	url = ../../data-integrations/datastream-delta-plugins.git
+	url = https://github.com/data-integrations/datastream-delta-plugins
 	branch = develop
 [submodule "app-artifacts/database-plugins"]
 	path = app-artifacts/database-plugins
-	url = ../../data-integrations/database-plugins.git
+	url = https://github.com/data-integrations/database-plugins
 	branch = develop
 [submodule "app-artifacts/delta-transformation"]
 	path = app-artifacts/delta-transformation
-	url = ../../data-integrations/delta-transformation.git
+	url = https://github.com/data-integrations/delta-transformation
 	branch = develop
 [submodule "metricswriters-extensions/metrics-writer-extension"]
 	path = metricswriters-extensions/metrics-writer-extension
-	url = ../metrics-writer-extension.git
+	url = https://github.com/cdapio/metrics-writer-extension
 	branch = develop
 [submodule "eventwriters-extensions/events-writer-extension"]
 	path = eventwriters-extensions/events-writer-extension
-	url = ../events-writer-extension.git
+	url = https://github.com/cdapio/events-writer-extension
 	branch = develop
