@@ -31,6 +31,7 @@ RUN tar -zcvf cdap-build-sources.tar.gz --exclude='.git*' --exclude='node_module
     apt-key --keyring /usr/share/keyrings/nodesource.gpg add /usr/share/keyrings/nodesource.gpg.key && \
     # installation of nodejs expects /bin/bash instead of /bin/sh
     apt-get update && /bin/bash -c 'apt-get -y install nodejs' && \
+    export MAVEN_OPTS=-Xmx4096m && \
     mvn install -f cdap -B -V -Ddocker.skip=true -DskipTests -P 'templates,!unit-tests' && \
     mvn install -B -V -Ddocker.skip=true -DskipTests -P 'templates,dist,k8s,!unit-tests' \
       -Dadditional.artifacts.dir="$DIR/app-artifacts" \
