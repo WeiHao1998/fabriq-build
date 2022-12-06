@@ -46,12 +46,8 @@ RUN mvn -pl cdap/cdap-ui -P dist frontend:yarn@yarn-install
 COPY cdap/cdap-ui/bower.json $DIR/cdap/cdap-ui/bower.json
 RUN mvn -pl cdap/cdap-ui -P dist frontend:bower@bower-install
 
-# Build CDAP except CDAP-UI
-COPY [^cdap-ui]* $DIR/
+# Build CDAP Templates
 RUN mvn install -f cdap -B -V -Ddocker.skip=true -DskipTests -P 'templates,!unit-tests'
-
-# Copy CDAP-UI
-COPY cdap/cdap-ui $DIR/cdap/cdap-ui
 
 # Build all
 RUN mvn install -B -V -Ddocker.skip=true -DskipTests -P 'templates,dist,k8s,!unit-tests' \
