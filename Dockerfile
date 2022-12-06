@@ -47,6 +47,7 @@ COPY cdap/cdap-ui/bower.json $DIR/cdap/cdap-ui/bower.json
 RUN mvn -pl cdap/cdap-ui -P dist frontend:bower@bower-install
 
 # Build CDAP Templates
+COPY . $DIR/
 RUN mvn install -f cdap -B -V -Ddocker.skip=true -DskipTests -P 'templates,!unit-tests'
 
 # Build all
