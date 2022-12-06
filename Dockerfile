@@ -13,7 +13,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM maven:3-eclipse-temurin-8 AS build
+FROM maven:3-eclipse-temurin-8-focal AS build
 ENV DIR /cdap/build
 ENV MAVEN_OPTS -Xmx4096m -Dhttp.keepAlive=false
 ENV NODE_OPTIONS --max-old-space-size=8192
@@ -22,8 +22,8 @@ ARG CONFIG_FILE_NAME
 WORKDIR $DIR/
 
 # Install NodeJS
-RUN apt-get update && apt-get install -y lsb-release && apt-get install -y apt-transport-https && \
-    DISTRO="$(lsb_release -s -c)" && \
+RUN apt-get update && apt-get install -y lsb-release  && apt-get install -y gnupg && \
+    apt-get install -y apt-transport-https && DISTRO="$(lsb_release -s -c)" && \
     echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_10.x ${DISTRO} main" | tee -a /etc/apt/sources.list.d/nodesource.list && \
     curl https://deb.nodesource.com/gpgkey/nodesource.gpg.key -o /usr/share/keyrings/nodesource.gpg.key && \
     apt-key --keyring /usr/share/keyrings/nodesource.gpg add /usr/share/keyrings/nodesource.gpg.key && \
