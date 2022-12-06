@@ -36,9 +36,14 @@ COPY cdap/cdap-ui/package.json $DIR/cdap/cdap-ui/package.json
 
 # Install Maven dependencies
 RUN mvn verify --fail-never
+
+# Install CDAP UI Yarn dependencies
 RUN mvn -pl cdap/cdap-ui -P dist frontend:install-node-and-yarn@dist
 RUN mvn -pl cdap/cdap-ui -P dist frontend:yarn@install-node-gyp
 RUN mvn -pl cdap/cdap-ui -P dist frontend:yarn@yarn-install
+
+# Install CDAP UI Bower dependencies
+COPY cdap/cdap-ui/bower.json $DIR/cdap/cdap-ui/bower.json
 RUN mvn -pl cdap/cdap-ui -P dist frontend:bower@bower-install
 
 # Build CDAP except CDAP-UI
