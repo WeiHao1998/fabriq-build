@@ -13,7 +13,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-FROM maven:3-eclipse-temurin-8-focal AS build
+FROM maven:3.6-openjdk-8 AS build
 ENV DIR /cdap/build
 ENV MAVEN_OPTS -Xmx4096m -Dhttp.keepAlive=false
 ENV NODE_OPTIONS --max-old-space-size=8192
@@ -35,7 +35,7 @@ COPY .poms $DIR/
 COPY cdap/cdap-ui/package.json $DIR/cdap/cdap-ui/package.json
 
 # Install Maven dependencies
-RUN mvn verify --fail-never
+RUN mvn dependency:go-offline --fail-never
 
 # Install CDAP UI Yarn dependencies
 RUN mvn -pl cdap/cdap-ui -P dist frontend:install-node-and-yarn@dist
