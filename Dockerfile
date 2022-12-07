@@ -35,7 +35,7 @@ COPY .poms $DIR/
 COPY cdap/cdap-ui/package.json $DIR/cdap/cdap-ui/package.json
 
 # Install Maven dependencies
-RUN mvn dependency:go-offline --fail-never
+RUN mvn verify --fail-never
 
 # Install CDAP UI Yarn dependencies
 RUN mvn -pl cdap/cdap-ui -P dist frontend:install-node-and-yarn@dist
