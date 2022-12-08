@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y lsb-release  && apt-get install -y gnup
 
 # Copy only maven poms and cdap-ui package.json
 COPY .poms $DIR/
-COPY cdap/cdap-ui/package.json $DIR/cdap/cdap-ui/package.json
+COPY ["cdap/cdap-ui/package.json", "cdap/cdap-ui/yarn.lock", "$DIR/cdap/cdap-ui/"]
 
 # Install Maven dependencies
 RUN mvn verify --fail-never
