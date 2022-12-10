@@ -34,3 +34,4 @@ dependency-reduced-pom.xml
 
 # Docker build temp dirs
 .poms
+.suppressions

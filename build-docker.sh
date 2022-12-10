@@ -4,10 +4,12 @@ tag="xaana/fabriq:latest"
 
 mvn clean
 
-rm -rf .poms
+rm -rf .poms .suppressions
 
-mkdir .poms
+mkdir .poms .suppressions
 
 find . -name 'pom.xml' -exec cp --parents \{\} .poms \;
+
+find . -name 'suppressions.xml' -exec cp --parents \{\} .suppressions \;
 
 docker build -t "$tag" .
