@@ -4,7 +4,7 @@
 	branch = develop
 [submodule "app-artifacts/hydrator-plugins"]
 	path = app-artifacts/hydrator-plugins
-	url = https://github.com/cdapio/hydrator-plugins
+	url = https://github.com/xaana/hydrator-plugins.git
 	branch = develop
 [submodule "security-extensions/cdap-security-extn"]
 	path = security-extensions/cdap-security-extn
