@@ -1,6 +1,8 @@
 #!/bin/bash
 
-tag="xaana/fabriq:latest"
+buildTag="xaana/fabriq-build:latest"
+sandboxTag="xaana/fabriq-sandbox:latest"
+distTag="xaana/fabriq:latest"
 
 mvn clean
 
@@ -12,4 +14,8 @@ find . -name 'pom.xml' -exec cp --parents \{\} .poms \;
 
 find . -name 'suppressions.xml' -exec cp --parents \{\} .suppressions \;
 
-docker build -t "$tag" .
+docker build -t "$buildTag" -f Dockerfile.build .
+
+docker build -t "$sandboxTag" -f Dockerfile.sandbox .
+
+docker build -t "$distTag" -f Dockerfile.dist .

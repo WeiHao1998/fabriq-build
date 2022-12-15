@@ -1,0 +1,15 @@
+FROM xaana/fabriq-build AS build
+
+FROM openjdk:8-jdk AS run
+WORKDIR /
+COPY --from=build /cdap/build/cdap/cdap-standalone/target/cdap-sandbox-*.zip /opt/cdap/cdap-sandbox.zip
+RUN apt-get update && \
+    apt-get -y install unzip \;
+
+RUN unzip /opt/cdap/cdap-sandbox.zip /opt/cdap && \
+    mv /opt/cdap/cdap-sandbox-*/ /opt/cdap/sandbox && \
+    rm /opt/cdap/cdap-sandbox.zip \;
+
+EXPOSE 11011 11015
+
+ENTRYPOINT ["/opt/cdap/sandbox/bin/cdap", "sandbox", "start", "--foreground"]

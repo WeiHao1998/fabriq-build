@@ -1,0 +1,39 @@
+FROM maven:3.6-openjdk-8
+ENV DIR="/cdap/build" MAVEN_OPTS="-Xmx4096m -Dhttp.keepAlive=false" \
+    NODE_OPTIONS="--max-old-space-size=8192"
+ARG EXTEND_DEFAULT_CONFIGS=false
+ARG CONFIG_FILE_NAME
+WORKDIR $DIR/
+
+# Install NodeJS
+RUN apt-get update && apt-get install -y lsb-release  && apt-get install -y gnupg && \
+    apt-get install -y apt-transport-https && DISTRO="$(lsb_release -s -c)" && \
+    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_10.x ${DISTRO} main" | tee -a /etc/apt/sources.list.d/nodesource.list && \
+    curl https://deb.nodesource.com/gpgkey/nodesource.gpg.key -o /usr/share/keyrings/nodesource.gpg.key && \
+    apt-key --keyring /usr/share/keyrings/nodesource.gpg add /usr/share/keyrings/nodesource.gpg.key && \
+    # installation of nodejs expects /bin/bash instead of /bin/sh
+    apt-get update && /bin/bash -c 'apt-get -y install nodejs'
+
+# Copy only maven poms and cdap-ui package.json
+COPY .poms .suppressions $DIR/
+COPY ["cdap/cdap-ui/package.json", "cdap/cdap-ui/yarn.lock", "cdap/cdap-ui/bower.json", "$DIR/cdap/cdap-ui/"]
+
+# Install Maven dependencies
+RUN mvn verify --fail-never
+
+# Install CDAP UI JS dependencies
+RUN mvn -pl cdap/cdap-ui -P dist frontend:install-node-and-yarn@dist && \
+  mvn -pl cdap/cdap-ui -P dist frontend:yarn@install-node-gyp && \
+  mvn -pl cdap/cdap-ui -P dist frontend:yarn@yarn-install && \
+  mvn -pl cdap/cdap-ui -P dist frontend:bower@bower-install
+
+# Build All
+COPY . $DIR/
+RUN mvn install -f cdap -B -V -Ddocker.skip=true -DskipTests -P 'templates,!unit-tests' && \
+  mvn install -B -V -Ddocker.skip=true -DskipTests -pl '!cdap/cdap-standalone' -P 'templates,dist,k8s,!unit-tests' \
+      -Dadditional.artifacts.dir="$DIR/app-artifacts" \
+      -Dsecurity.extensions.dir="$DIR/security-extensions" \
+      -Dmetricswriters.extensions.dir="$DIR/metricswriters-extensions" \
+      -Deventwriters.extensions.dir="$DIR/eventwriters-extensions" \
+      -Dextend-default-configs="$EXTEND_DEFAULT_CONFIGS" -Dconfig-path="$DIR/$CONFIG_FILE_NAME" \
+      -Dui.build.name=cdap-non-optimized-full-build
