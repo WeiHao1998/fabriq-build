@@ -1,14 +1,21 @@
 FROM xaana/fabriq-build AS build
 
 FROM openjdk:8-jdk AS run
-WORKDIR /
+WORKDIR /opt/cdap
 COPY --from=build /cdap/build/cdap/cdap-standalone/target/cdap-sandbox-*.zip /opt/cdap/cdap-sandbox.zip
-RUN apt-get update && \
-    apt-get -y install unzip \;
 
-RUN unzip /opt/cdap/cdap-sandbox.zip /opt/cdap && \
+# Install Unzip & NodeJS
+RUN apt-get update && apt-get install -y lsb-release  && apt-get install -y gnupg && apt-get install -y unzip && \
+    apt-get install -y apt-transport-https && DISTRO="$(lsb_release -s -c)" && \
+    echo "deb [signed-by=/usr/share/keyrings/nodesource.gpg] https://deb.nodesource.com/node_10.x ${DISTRO} main" | tee -a /etc/apt/sources.list.d/nodesource.list && \
+    curl https://deb.nodesource.com/gpgkey/nodesource.gpg.key -o /usr/share/keyrings/nodesource.gpg.key && \
+    apt-key --keyring /usr/share/keyrings/nodesource.gpg add /usr/share/keyrings/nodesource.gpg.key && \
+    # installation of nodejs expects /bin/bash instead of /bin/sh
+    apt-get update && /bin/bash -c 'apt-get -y install nodejs'
+
+RUN unzip /opt/cdap/cdap-sandbox.zip && \
     mv /opt/cdap/cdap-sandbox-*/ /opt/cdap/sandbox && \
-    rm /opt/cdap/cdap-sandbox.zip \;
+    rm /opt/cdap/cdap-sandbox.zip
 
 EXPOSE 11011 11015
 
