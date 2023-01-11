@@ -16,6 +16,6 @@ find . -name 'suppressions.xml' -exec cp --parents \{\} .suppressions \;
 
 docker build -t "$buildTag" -f Dockerfile.build .
 
-docker build -t "$sandboxTag" -f Dockerfile.sandbox .
+# docker build -t "$sandboxTag" -f Dockerfile.sandbox .
 
-docker build -t "$distTag" -f Dockerfile.dist .
+# docker build -t "$distTag" -f Dockerfile.dist .
